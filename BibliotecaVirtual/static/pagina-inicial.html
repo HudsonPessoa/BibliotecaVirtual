@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f0">
+  <meta name="description" content="Organize, descubra e gerencie os livros da sua biblioteca virtual.">
+  <title>Entre Páginas — Biblioteca virtual</title>
+  <link rel="stylesheet" href="/estilos.css">
+  <script src="/aplicacao.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Entre Páginas, início">
+      <span class="brand-mark" aria-hidden="true">e.</span>
+      <span>entre<span class="brand-light">páginas</span></span>
+    </a>
+    <span class="topbar-note"><span class="status-dot"></span> sua biblioteca, sempre por perto</span>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span> BIBLIOTECA VIRTUAL</p>
+        <h1>Um mundo inteiro<br>entre <span>páginas.</span></h1>
+        <p class="hero-description">Seu próximo livro favorito pode estar mais perto do que você imagina.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="sun-disc"></div>
+        <div class="hero-book book-one"></div>
+        <div class="hero-book book-two"></div>
+        <div class="hero-book book-three"></div>
+        <div class="hero-plant">✳</div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Resumo da biblioteca">
+      <div class="stat-card">
+        <span class="stat-icon">▤</span>
+        <div><span class="stat-label">NO ACERVO</span><strong id="total-count">—</strong></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon stat-icon-green">↗</span>
+        <div><span class="stat-label">DISPONÍVEIS</span><strong id="available-count">—</strong></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon stat-icon-amber">◷</span>
+        <div><span class="stat-label">EM LEITURA</span><strong id="borrowed-count">—</strong></div>
+      </div>
+    </section>
+
+    <section class="catalog" aria-labelledby="catalog-heading">
+      <div class="catalog-heading">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-line"></span> EXPLORE O ACERVO</p>
+          <h2 id="catalog-heading">Livros para descobrir<span class="heading-period">.</span></h2>
+        </div>
+        <button class="primary-button" id="add-book-button" type="button">
+          <span aria-hidden="true">+</span> Adicionar livro
+        </button>
+      </div>
+
+      <div class="toolbar">
+        <label class="search-box">
+          <span class="search-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Buscar por título, autor ou gênero</span>
+          <input id="search-input" type="search" placeholder="Buscar por título, autor ou gênero..." autocomplete="off">
+          <kbd>⌘ K</kbd>
+        </label>
+        <label class="filter-label">
+          <span class="visually-hidden">Filtrar disponibilidade</span>
+          <select id="status-filter">
+            <option value="">Todos os livros</option>
+            <option value="available">Disponíveis</option>
+            <option value="borrowed">Em leitura</option>
+          </select>
+        </label>
+      </div>
+
+      <p class="results-label" id="results-label" aria-live="polite"></p>
+      <div class="book-grid" id="book-grid" aria-live="polite"></div>
+      <div class="empty-state" id="empty-state" hidden>
+        <span class="empty-icon" aria-hidden="true">⌕</span>
+        <h3 id="empty-title">Nenhum livro encontrado</h3>
+        <p id="empty-description">Experimente buscar por outro título ou autor.</p>
+        <button class="text-button" id="clear-filters-button" type="button">Limpar filtros</button>
+      </div>
+      <p class="error-banner" id="error-banner" role="alert" hidden></p>
+    </section>
+
+    <footer class="footer">
+      <span>Entre Páginas <span class="footer-dot">·</span> Feito para quem ama ler</span>
+      <span>Um livro de cada vez.</span>
+    </footer>
+  </main>
+
+  <dialog class="book-dialog" id="book-dialog" aria-labelledby="dialog-title">
+    <form class="book-form" id="book-form">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-line"></span> ACERVO</p>
+          <h2 id="dialog-title">Adicionar livro</h2>
+        </div>
+        <button class="icon-button close-dialog" type="button" aria-label="Fechar formulário">×</button>
+      </div>
+      <label>Título <span class="required-mark">*</span>
+        <input name="title" maxlength="150" required placeholder="Ex.: O nome do livro">
+      </label>
+      <div class="form-row">
+        <label>Autor <span class="required-mark">*</span>
+          <input name="author" maxlength="120" required placeholder="Nome do autor">
+        </label>
+        <label>Gênero <span class="required-mark">*</span>
+          <input name="genre" maxlength="60" required placeholder="Ex.: Romance">
+        </label>
+      </div>
+      <div class="form-row">
+        <label>Ano de publicação <span class="required-mark">*</span>
+          <input name="year" type="number" min="1" max="9999" required placeholder="2024">
+        </label>
+        <label>Disponibilidade <span class="required-mark">*</span>
+          <select name="status" required>
+            <option value="available">Disponível</option>
+            <option value="borrowed">Em leitura</option>
+          </select>
+        </label>
+      </div>
+      <label>ISBN <span class="optional-mark">opcional</span>
+        <input name="isbn" maxlength="20" placeholder="978-85-0000-000-0">
+      </label>
+      <label>Sobre o livro <span class="optional-mark">opcional</span>
+        <textarea name="description" maxlength="2000" rows="3" placeholder="Uma breve descrição..."></textarea>
+      </label>
+      <p class="form-error" id="form-error" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button class="secondary-button close-dialog" type="button">Cancelar</button>
+        <button class="primary-button" id="save-book-button" type="submit">Salvar livro</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="confirm-dialog" id="confirm-dialog" aria-labelledby="confirm-title">
+    <form method="dialog" class="confirm-content">
+      <span class="confirm-icon" aria-hidden="true">!</span>
+      <h2 id="confirm-title">Remover este livro?</h2>
+      <p id="confirm-description"></p>
+      <div class="dialog-actions">
+        <button class="secondary-button" value="cancel">Cancelar</button>
+        <button class="danger-button" id="confirm-delete-button" value="confirm">Remover livro</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
